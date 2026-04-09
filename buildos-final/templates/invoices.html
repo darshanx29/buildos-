@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BuildOS | Invoices</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config={darkMode:"class",theme:{extend:{colors:{"error-container":"#ffdad6","primary-fixed":"#d7e2ff","on-primary-fixed-variant":"#3c475d","surface-container-highest":"#d1e4ff","surface-container-lowest":"#ffffff","on-secondary-container":"#48617e","on-primary-fixed":"#101b30","error":"#ba1a1a","primary":"#000000","surface-container-high":"#dbe9ff","outline-variant":"#c4c6cc","tertiary":"#000000","primary-container":"#101b30","on-surface-variant":"#44474c","on-tertiary-fixed":"#2f1400","on-error":"#ffffff","tertiary-fixed":"#ffdcc4","secondary-container":"#c2dcff","inverse-surface":"#1b324a","on-secondary-fixed":"#001d36","tertiary-fixed-dim":"#ffb780","on-secondary":"#ffffff","surface":"#f8f9ff","on-tertiary-container":"#bb7336","on-tertiary":"#ffffff","secondary-fixed":"#d1e4ff","on-background":"#031d34","on-error-container":"#93000a","surface-tint":"#545e76","surface-variant":"#d1e4ff","outline":"#74777d","on-primary-container":"#79849d","surface-dim":"#c5dcfb","surface-container-low":"#eef4ff","secondary":"#47607e","on-tertiary-fixed-variant":"#6f3800","inverse-primary":"#bbc6e2","on-surface":"#031d34","background":"#f8f9ff","surface-container":"#e5efff","on-primary":"#ffffff","surface-bright":"#f8f9ff","inverse-on-surface":"#e9f1ff"},borderRadius:{DEFAULT:"0.125rem",lg:"0.25rem",xl:"0.5rem",full:"0.75rem"},fontFamily:{headline:["Manrope"],body:["Inter"],label:["Inter"]}}}}
+</script>
+<style>
+  .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;display:inline-block;line-height:1;text-transform:none;letter-spacing:normal;word-wrap:normal;white-space:nowrap;}
+  body{font-family:'Inter',sans-serif;background-color:#f8f9ff;}
+  .sidebar-active{background-color:#eef4ff;color:#000000;}
+</style>
+</head>
+<body class="text-on-background">
+<div class="flex min-h-screen">
+  <aside class="w-64 bg-surface border-r border-outline-variant/20 flex flex-col fixed h-full z-50">
+    <div class="p-6 flex items-center gap-3">
+      <div class="size-10 bg-primary flex items-center justify-center rounded-lg">
+        <svg class="text-white size-6" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" fill="currentColor"/></svg>
+      </div>
+      <div><h1 class="font-headline font-bold text-lg leading-none">BuildOS</h1><p class="text-on-surface-variant text-xs mt-1">Construction Management</p></div>
+    </div>
+    <nav class="flex-1 px-4 mt-4 flex flex-col gap-1">
+      <a href="/dashboard" class="text-on-surface-variant hover:bg-surface-container-low flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
+      <a href="/inventory" class="text-on-surface-variant hover:bg-surface-container-low flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined">inventory_2</span>Inventory</a>
+      <a href="/finance" class="text-on-surface-variant hover:bg-surface-container-low flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined">payments</span>Finance</a>
+      <a href="/invoices" class="sidebar-active flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">receipt_long</span>Invoices</a>
+      <a href="/projects" class="text-on-surface-variant hover:bg-surface-container-low flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined">architecture</span>Projects</a>
+    </nav>
+    <div class="p-4 mt-auto border-t border-outline-variant/10">
+      <div class="flex items-center gap-3 p-2 rounded-xl bg-surface-container-low">
+        <div class="size-10 rounded-full bg-secondary flex items-center justify-center text-white font-bold text-sm">SM</div>
+        <div class="overflow-hidden"><p class="text-sm font-bold truncate">Site Manager</p><p class="text-xs text-on-surface-variant truncate">Director of Operations</p></div>
+      </div>
+    </div>
+  </aside>
+  <main class="flex-1 ml-64">
+    <header class="h-20 bg-surface/80 backdrop-blur-md border-b border-outline-variant/10 flex items-center justify-between px-10 sticky top-0 z-40">
+      <div class="flex items-center gap-6">
+        <h2 class="font-headline text-xl font-bold">Invoice Generation</h2>
+        <div class="h-8 w-px bg-outline-variant/20"></div>
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-lg text-on-surface-variant">folder_open</span>
+          <select id="project-selector" onchange="switchProject(this.value)" class="bg-transparent border-none font-semibold text-on-surface-variant focus:ring-0 cursor-pointer text-sm"></select>
+        </div>
+      </div>
+      <button onclick="document.getElementById('new-invoice-panel').classList.toggle('hidden')"
+              class="flex items-center gap-2 bg-primary text-white text-xs font-bold px-4 py-2 rounded-xl hover:opacity-90">
+        <span class="material-symbols-outlined text-sm">add</span> New Invoice
+      </button>
+    </header>
+    <div class="p-10 max-w-[1600px] mx-auto space-y-8">
+
+      <div id="new-invoice-panel" class="hidden bg-surface-container-lowest border border-outline-variant/5 shadow-sm p-8 rounded-3xl">
+        <h3 class="font-headline font-bold text-lg mb-6">Create New Invoice</h3>
+        <div id="invoice-items" class="space-y-3 mb-4">
+          <div class="grid grid-cols-5 gap-3 items-center" id="item-row-0">
+            <select class="item-material col-span-2 bg-surface-container-low border-none rounded-xl py-2 px-3 text-sm"></select>
+            <input class="item-desc bg-surface-container-low border-none rounded-xl py-2 px-3 text-sm" placeholder="Description"/>
+            <input class="item-qty bg-surface-container-low border-none rounded-xl py-2 px-3 text-sm" type="number" placeholder="Qty" min="0.01" step="0.01"/>
+            <input class="item-price bg-surface-container-low border-none rounded-xl py-2 px-3 text-sm" type="number" placeholder="Unit Price ₹" min="0"/>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <button onclick="addInvoiceRow()" class="text-secondary font-bold text-xs uppercase tracking-wider">+ Add Line Item</button>
+          <div class="flex-1"></div>
+          <button onclick="submitInvoice()" class="bg-secondary text-white font-bold px-6 py-2 rounded-xl text-sm hover:opacity-90">Generate Invoice</button>
+          <button onclick="document.getElementById('new-invoice-panel').classList.add('hidden')" class="bg-surface-container-low text-on-surface-variant font-bold px-6 py-2 rounded-xl text-sm">Cancel</button>
+        </div>
+        <p id="inv-status" class="mt-3 text-sm font-bold text-secondary hidden"></p>
+      </div>
+
+      <div class="bg-surface-container-lowest border border-outline-variant/5 shadow-sm overflow-hidden rounded-3xl">
+        <div class="p-6 border-b border-outline-variant/10">
+          <h3 class="font-headline font-bold text-lg">Invoice Register</h3>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-surface-container-low">
+              <tr>
+                <th class="px-6 py-3 text-left text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">Invoice #</th>
+                <th class="px-6 py-3 text-left text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">Date</th>
+                <th class="px-6 py-3 text-right text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">Amount</th>
+                <th class="px-6 py-3 text-center text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">Status</th>
+                <th class="px-6 py-3 text-center text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inv-tbody" class="divide-y divide-outline-variant/10">
+              <tr><td colspan="5" class="px-6 py-16 text-center text-on-surface-variant text-sm">Loading invoices...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  let pid=localStorage.getItem('currentProjectId');
+  let mats=[];
+  let rowCount=1;
+
+  async function init(){
+    const res=await fetch('/api/projects/');const projs=await res.json();
+    if(!projs.length)return;
+    if(!pid||!projs.find(p=>p.id===pid))pid=projs[0].id;
+    localStorage.setItem('currentProjectId',pid);
+    document.getElementById('project-selector').innerHTML=projs.map(p=>`<option value="${p.id}"${p.id===pid?' selected':''}>${p.name}</option>`).join('');
+    const mr=await fetch(`/api/materials/${pid}`);mats=await mr.json();
+    populateMaterialSelects();
+    await loadInvoices();
+  }
+
+  function populateMaterialSelects(){
+    document.querySelectorAll('.item-material').forEach(sel=>{
+      sel.innerHTML=mats.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
+    });
+  }
+
+  function addInvoiceRow(){
+    const id=rowCount++;
+    const div=document.createElement('div');
+    div.className='grid grid-cols-5 gap-3 items-center';
+    div.id='item-row-'+id;
+    div.innerHTML=`
+      <select class="item-material col-span-2 bg-surface-container-low border-none rounded-xl py-2 px-3 text-sm">${mats.map(m=>`<option value="${m.id}">${m.name}</option>`).join('')}</select>
+      <input class="item-desc bg-surface-container-low border-none rounded-xl py-2 px-3 text-sm" placeholder="Description"/>
+      <input class="item-qty bg-surface-container-low border-none rounded-xl py-2 px-3 text-sm" type="number" placeholder="Qty" min="0.01" step="0.01"/>
+      <input class="item-price bg-surface-container-low border-none rounded-xl py-2 px-3 text-sm" type="number" placeholder="Unit Price ₹"/>`;
+    document.getElementById('invoice-items').appendChild(div);
+  }
+
+  async function submitInvoice(){
+    const rows=document.querySelectorAll('#invoice-items > div');
+    const items=[];
+    rows.forEach(row=>{
+      const mid=row.querySelector('.item-material').value;
+      const desc=row.querySelector('.item-desc').value;
+      const qty=parseFloat(row.querySelector('.item-qty').value);
+      const price=parseFloat(row.querySelector('.item-price').value);
+      if(mid&&qty>0&&price>=0) items.push({material_id:mid,description:desc,quantity:qty,unit_price:price});
+    });
+    if(!items.length)return alert('Add at least one valid line item.');
+    const r=await fetch('/api/invoices/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({project_id:pid,items})});
+    const inv=await r.json();
+    const s=document.getElementById('inv-status');
+    s.textContent='✓ Invoice '+inv.invoice_number+' created! Total: ₹'+Number(inv.total||inv.total_amount).toLocaleString('en-IN');
+    s.classList.remove('hidden');
+    setTimeout(()=>s.classList.add('hidden'),4000);
+    await loadInvoices();
+  }
+
+  // PDF Download Trigger
+  function downloadInvoicePDF(invoiceId) {
+    window.location.href = `/api/pdf/${invoiceId}/pdf`;
+  }
+
+  async function loadInvoices(){
+    const r=await fetch(`/api/invoices/${pid}`),invs=await r.json();
+    const tb=document.getElementById('inv-tbody');
+    if(!invs.length){tb.innerHTML='<tr><td colspan="5" class="px-6 py-16 text-center text-on-surface-variant text-sm">No invoices yet.</td></tr>';return;}
+    const sc={draft:'bg-surface-container-high text-on-surface-variant',sent:'bg-tertiary-fixed text-on-tertiary-fixed',paid:'bg-secondary-container text-secondary'};
+    tb.innerHTML=invs.map(inv=>`
+      <tr class="hover:bg-surface-container-low/50">
+        <td class="px-6 py-4 font-headline font-bold text-sm">${inv.invoice_number}</td>
+        <td class="px-6 py-4 text-sm text-on-surface-variant">${new Date(inv.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}</td>
+        <td class="px-6 py-4 text-right font-headline font-bold">₹${Number(inv.total_amount).toLocaleString('en-IN')}</td>
+        <td class="px-6 py-4 text-center">
+          <span class="text-[10px] font-bold px-2 py-1 rounded uppercase ${sc[inv.status]||sc.draft}">${inv.status}</span>
+        </td>
+        <td class="px-6 py-4 text-center flex gap-4 justify-center">
+          <button onclick="downloadInvoicePDF('${inv.id}')" class="text-primary-container text-xs font-bold hover:opacity-70 flex items-center gap-1">
+             <span class="material-symbols-outlined text-[18px]">picture_as_pdf</span> PDF
+          </button>
+          ${inv.status==='draft'?`<button onclick="updateStatus('${inv.id}','sent')" class="text-on-tertiary-container text-xs font-bold hover:opacity-70">Mark Sent</button>`:''}
+          ${inv.status==='sent'?`<button onclick="updateStatus('${inv.id}','paid')" class="text-secondary text-xs font-bold hover:opacity-70">Mark Paid</button>`:''}
+          <button onclick="deleteInv('${inv.id}')" class="text-error text-xs font-bold hover:opacity-70">Delete</button>
+        </td>
+      </tr>`).join('');
+  }
+
+  async function updateStatus(id,status){
+    await fetch(`/api/invoices/${id}/status`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({status})});
+    await loadInvoices();
+  }
+  async function deleteInv(id){
+    if(!confirm('Delete this invoice?'))return;
+    await fetch(`/api/invoices/${id}`,{method:'DELETE'});
+    await loadInvoices();
+  }
+  function switchProject(id){localStorage.setItem('currentProjectId',id);window.location.reload();}
+  init().catch(console.error);
+</script>
+</body>
+</html>

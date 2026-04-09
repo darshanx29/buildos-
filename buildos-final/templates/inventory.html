@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BuildOS | Inventory</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config={darkMode:"class",theme:{extend:{colors:{"error-container":"#ffdad6","primary-fixed":"#d7e2ff","on-primary-fixed-variant":"#3c475d","surface-container-highest":"#d1e4ff","surface-container-lowest":"#ffffff","on-secondary-container":"#48617e","on-primary-fixed":"#101b30","error":"#ba1a1a","primary":"#000000","surface-container-high":"#dbe9ff","outline-variant":"#c4c6cc","tertiary":"#000000","primary-container":"#101b30","on-surface-variant":"#44474c","on-tertiary-fixed":"#2f1400","on-error":"#ffffff","tertiary-fixed":"#ffdcc4","secondary-container":"#c2dcff","inverse-surface":"#1b324a","on-secondary-fixed":"#001d36","tertiary-fixed-dim":"#ffb780","on-secondary":"#ffffff","surface":"#f8f9ff","on-tertiary-container":"#bb7336","on-tertiary":"#ffffff","secondary-fixed":"#d1e4ff","on-background":"#031d34","on-error-container":"#93000a","surface-tint":"#545e76","surface-variant":"#d1e4ff","outline":"#74777d","on-primary-container":"#79849d","surface-dim":"#c5dcfb","surface-container-low":"#eef4ff","secondary":"#47607e","on-tertiary-fixed-variant":"#6f3800","inverse-primary":"#bbc6e2","on-surface":"#031d34","background":"#f8f9ff","surface-container":"#e5efff","on-primary":"#ffffff","surface-bright":"#f8f9ff","inverse-on-surface":"#e9f1ff"},borderRadius:{DEFAULT:"0.125rem",lg:"0.25rem",xl:"0.5rem",full:"0.75rem"},fontFamily:{headline:["Manrope"],body:["Inter"],label:["Inter"]}}}}
+</script>
+<style>
+  .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;display:inline-block;line-height:1;text-transform:none;letter-spacing:normal;word-wrap:normal;white-space:nowrap;}
+  body{font-family:'Inter',sans-serif;background-color:#f8f9ff;}
+  .sidebar-active{background-color:#eef4ff;color:#000000;}
+</style>
+</head>
+<body class="text-on-background">
+<div class="flex min-h-screen">
+  <aside class="w-64 bg-surface border-r border-outline-variant/20 flex flex-col fixed h-full z-50">
+    <div class="p-6 flex items-center gap-3">
+      <div class="size-10 bg-primary flex items-center justify-center rounded-lg">
+        <svg class="text-white size-6" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" fill="currentColor"/></svg>
+      </div>
+      <div><h1 class="font-headline font-bold text-lg leading-none">BuildOS</h1><p class="text-on-surface-variant text-xs mt-1">Construction Management</p></div>
+    </div>
+    <nav class="flex-1 px-4 mt-4 flex flex-col gap-1">
+      <a href="/dashboard" class="text-on-surface-variant hover:bg-surface-container-low flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
+      <a href="/inventory" class="sidebar-active flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">inventory_2</span>Inventory</a>
+      <a href="/finance" class="text-on-surface-variant hover:bg-surface-container-low flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined">payments</span>Finance</a>
+      <a href="/invoices" class="text-on-surface-variant hover:bg-surface-container-low flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined">receipt_long</span>Invoices</a>
+      <a href="/projects" class="text-on-surface-variant hover:bg-surface-container-low flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined">architecture</span>Projects</a>
+    </nav>
+    <div class="p-4 mt-auto border-t border-outline-variant/10">
+      <div class="flex items-center gap-3 p-2 rounded-xl bg-surface-container-low">
+        <div class="size-10 rounded-full bg-secondary flex items-center justify-center text-white font-bold text-sm">SM</div>
+        <div class="overflow-hidden"><p class="text-sm font-bold truncate">Site Manager</p><p class="text-xs text-on-surface-variant truncate">Director of Operations</p></div>
+      </div>
+    </div>
+  </aside>
+  <main class="flex-1 ml-64">
+    <header class="h-20 bg-surface/80 backdrop-blur-md border-b border-outline-variant/10 flex items-center justify-between px-10 sticky top-0 z-40">
+      <div class="flex items-center gap-6">
+        <h2 class="font-headline text-xl font-bold">Inventory Management</h2>
+        <div class="h-8 w-px bg-outline-variant/20"></div>
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-lg text-on-surface-variant">folder_open</span>
+          <select id="project-selector" onchange="switchProject(this.value)" class="bg-transparent border-none font-semibold text-on-surface-variant focus:ring-0 cursor-pointer text-sm"></select>
+        </div>
+      </div>
+      <button onclick="document.getElementById('add-modal').classList.remove('hidden')"
+              class="flex items-center gap-2 bg-primary text-white text-xs font-bold px-4 py-2 rounded-xl hover:opacity-90">
+        <span class="material-symbols-outlined text-sm">add</span> Add Material
+      </button>
+    </header>
+    <div class="p-10 max-w-[1600px] mx-auto space-y-8">
+
+      <!-- Stats Bar -->
+      <div class="grid grid-cols-3 gap-6">
+        <div class="bg-surface-container-lowest p-6 rounded-full border border-outline-variant/5 shadow-sm">
+          <p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Total SKUs</p>
+          <div class="font-headline text-4xl font-extrabold" id="stat-total">—</div>
+        </div>
+        <div class="bg-surface-container-lowest p-6 rounded-full border border-outline-variant/5 shadow-sm">
+          <p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Low Stock Alerts</p>
+          <div class="font-headline text-4xl font-extrabold text-error" id="stat-low">—</div>
+        </div>
+        <div class="bg-surface-container-lowest p-6 rounded-full border border-outline-variant/5 shadow-sm">
+          <p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Total Stock Value</p>
+          <div class="font-headline text-4xl font-extrabold" id="stat-value">₹0</div>
+        </div>
+      </div>
+
+      <!-- Materials Table -->
+      <div class="bg-surface-container-lowest rounded-full border border-outline-variant/5 shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-outline-variant/10 flex items-center justify-between">
+          <h3 class="font-headline font-bold text-lg">Materials Register</h3>
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+            <input id="search-input" oninput="filterTable()" class="bg-surface-container-low border-none rounded-full py-2 pl-9 pr-4 text-sm w-56" placeholder="Search materials..."/>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-surface-container-low">
+              <tr>
+                <th class="px-6 py-3 text-left text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">Material</th>
+                <th class="px-6 py-3 text-right text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">Qty</th>
+                <th class="px-6 py-3 text-left text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">Unit</th>
+                <th class="px-6 py-3 text-right text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">Unit Price</th>
+                <th class="px-6 py-3 text-right text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">Threshold</th>
+                <th class="px-6 py-3 text-center text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">Status</th>
+                <th class="px-6 py-3 text-center text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="materials-tbody" class="divide-y divide-outline-variant/10">
+              <tr><td colspan="7" class="px-6 py-16 text-center text-on-surface-variant text-sm">Loading materials...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Log Transaction -->
+      <div class="bg-surface-container-low rounded-full p-8 border border-outline-variant/5">
+        <h3 class="font-headline font-bold text-lg mb-6">Log Transaction</h3>
+        <div class="grid grid-cols-4 gap-4 items-end">
+          <div>
+            <label class="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant mb-2 block">Material</label>
+            <select id="tx-material" class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm focus:ring-2 focus:ring-secondary/30"></select>
+          </div>
+          <div>
+            <label class="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant mb-2 block">Type</label>
+            <select id="tx-type" class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm">
+              <option value="in">Stock In ↑</option>
+              <option value="out">Stock Out ↓</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant mb-2 block">Quantity</label>
+            <input id="tx-qty" type="number" min="0.01" step="0.01" class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm" placeholder="0"/>
+          </div>
+          <button onclick="logTx()" class="bg-secondary text-white font-bold py-3 px-6 rounded-xl text-sm hover:opacity-90 flex items-center gap-2 justify-center">
+            <span class="material-symbols-outlined text-sm">check</span> Log Transaction
+          </button>
+        </div>
+        <div id="tx-status" class="mt-4 text-sm font-bold text-secondary hidden"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Add Material Modal -->
+<div id="add-modal" class="hidden fixed inset-0 bg-black/40 z-[100] flex items-center justify-center">
+  <div class="bg-surface-container-lowest rounded-full p-8 w-full max-w-md shadow-2xl space-y-4">
+    <h3 class="font-headline text-xl font-bold">Add Material</h3>
+    <input id="m-name" class="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 text-sm" placeholder="Material Name"/>
+    <div class="grid grid-cols-2 gap-3">
+      <input id="m-unit" class="bg-surface-container-low border-none rounded-xl py-3 px-4 text-sm" placeholder="Unit (bags/kg/pcs)"/>
+      <input id="m-qty" type="number" class="bg-surface-container-low border-none rounded-xl py-3 px-4 text-sm" placeholder="Initial Qty"/>
+    </div>
+    <div class="grid grid-cols-2 gap-3">
+      <input id="m-price" type="number" class="bg-surface-container-low border-none rounded-xl py-3 px-4 text-sm" placeholder="Unit Price (₹)"/>
+      <input id="m-threshold" type="number" class="bg-surface-container-low border-none rounded-xl py-3 px-4 text-sm" placeholder="Reorder Threshold"/>
+    </div>
+    <div class="flex gap-3">
+      <button onclick="addMaterial()" class="flex-1 bg-primary text-white font-bold py-3 rounded-xl text-sm">Add</button>
+      <button onclick="document.getElementById('add-modal').classList.add('hidden')" class="flex-1 bg-surface-container-low text-on-surface-variant font-bold py-3 rounded-xl text-sm">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let pid=localStorage.getItem('currentProjectId');
+  let mats=[];
+
+  async function init(){
+    const res=await fetch('/api/projects/');const projs=await res.json();
+    if(!projs.length)return;
+    if(!pid||!projs.find(p=>p.id===pid))pid=projs[0].id;
+    localStorage.setItem('currentProjectId',pid);
+    document.getElementById('project-selector').innerHTML=projs.map(p=>`<option value="${p.id}"${p.id===pid?' selected':''}>${p.name}</option>`).join('');
+    await loadMaterials();
+  }
+
+  async function loadMaterials(){
+    const r=await fetch(`/api/materials/${pid}`);mats=await r.json();
+    const rl=await fetch(`/api/materials/low-stock/${pid}`);const low=await rl.json();
+    document.getElementById('stat-total').textContent=mats.length;
+    document.getElementById('stat-low').textContent=low.length;
+    const val=mats.reduce((s,m)=>s+(m.quantity*m.unit_price),0);
+    document.getElementById('stat-value').textContent='₹'+val.toLocaleString('en-IN');
+    // populate tx selector
+    document.getElementById('tx-material').innerHTML=mats.map(m=>`<option value="${m.id}">${m.name} (${m.quantity} ${m.unit})</option>`).join('');
+    renderTable(mats);
+  }
+
+  function renderTable(data){
+    const tb=document.getElementById('materials-tbody');
+    if(!data.length){tb.innerHTML='<tr><td colspan="7" class="px-6 py-16 text-center text-on-surface-variant text-sm">No materials found.</td></tr>';return;}
+    tb.innerHTML=data.map(m=>{
+      const isLow=m.quantity<=m.reorder_threshold;
+      return `<tr class="hover:bg-surface-container-low/50 transition-colors">
+        <td class="px-6 py-4 font-bold text-sm text-on-surface">${m.name}</td>
+        <td class="px-6 py-4 text-right font-headline font-bold text-lg ${isLow?'text-error':'text-on-surface'}">${m.quantity}</td>
+        <td class="px-6 py-4 text-sm text-on-surface-variant">${m.unit}</td>
+        <td class="px-6 py-4 text-right text-sm font-semibold">₹${Number(m.unit_price).toLocaleString('en-IN')}</td>
+        <td class="px-6 py-4 text-right text-sm text-on-surface-variant">${m.reorder_threshold}</td>
+        <td class="px-6 py-4 text-center">
+          ${isLow
+            ?'<span class="bg-error-container text-error text-[10px] font-bold px-2 py-1 rounded uppercase">Low Stock</span>'
+            :'<span class="bg-secondary-container text-secondary text-[10px] font-bold px-2 py-1 rounded uppercase">OK</span>'}
+        </td>
+        <td class="px-6 py-4 text-center">
+          <button onclick="deleteMat('${m.id}')" class="text-error text-xs font-bold hover:opacity-70">Delete</button>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  function filterTable(){
+    const q=document.getElementById('search-input').value.toLowerCase();
+    renderTable(mats.filter(m=>m.name.toLowerCase().includes(q)));
+  }
+
+  async function addMaterial(){
+    const name=document.getElementById('m-name').value.trim();
+    const unit=document.getElementById('m-unit').value.trim()||'bags';
+    const qty=parseFloat(document.getElementById('m-qty').value)||0;
+    const price=parseFloat(document.getElementById('m-price').value)||0;
+    const threshold=parseFloat(document.getElementById('m-threshold').value)||10;
+    if(!name)return alert('Name required.');
+    await fetch('/api/materials/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({project_id:pid,name,unit,quantity:qty,unit_price:price,reorder_threshold:threshold})});
+    document.getElementById('add-modal').classList.add('hidden');
+    await loadMaterials();
+  }
+
+  async function deleteMat(id){
+    if(!confirm('Delete this material?'))return;
+    await fetch(`/api/materials/${id}`,{method:'DELETE'});
+    await loadMaterials();
+  }
+
+  async function logTx(){
+    const material_id=document.getElementById('tx-material').value;
+    const type=document.getElementById('tx-type').value;
+    const quantity=parseFloat(document.getElementById('tx-qty').value);
+    if(!material_id||!quantity)return alert('Select material and enter quantity.');
+    try{
+      await fetch('/api/transactions/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({material_id,project_id:pid,type,quantity,logged_by:'engineer'})});
+      const s=document.getElementById('tx-status');s.textContent='✓ Transaction logged!';s.classList.remove('hidden','text-error');s.classList.add('text-secondary');
+      setTimeout(()=>s.classList.add('hidden'),3000);
+      await loadMaterials();
+    }catch(e){
+      const s=document.getElementById('tx-status');s.textContent='✗ '+e.message;s.classList.remove('hidden','text-secondary');s.classList.add('text-error');
+    }
+  }
+
+  function switchProject(id){localStorage.setItem('currentProjectId',id);window.location.reload();}
+  init().catch(console.error);
+</script>
+</body>
+</html>

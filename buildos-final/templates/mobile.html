@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BuildOS | Mobile Site Log</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config={darkMode:"class",theme:{extend:{colors:{"error-container":"#ffdad6","primary-fixed":"#d7e2ff","on-primary-fixed-variant":"#3c475d","surface-container-highest":"#d1e4ff","surface-container-lowest":"#ffffff","on-secondary-container":"#48617e","on-primary-fixed":"#101b30","error":"#ba1a1a","primary":"#000000","surface-container-high":"#dbe9ff","outline-variant":"#c4c6cc","tertiary":"#000000","primary-container":"#101b30","on-surface-variant":"#44474c","on-tertiary-fixed":"#2f1400","on-error":"#ffffff","tertiary-fixed":"#ffdcc4","secondary-container":"#c2dcff","inverse-surface":"#1b324a","on-secondary-fixed":"#001d36","tertiary-fixed-dim":"#ffb780","on-secondary":"#ffffff","surface":"#f8f9ff","on-tertiary-container":"#bb7336","on-tertiary":"#ffffff","secondary-fixed":"#d1e4ff","on-background":"#031d34","on-error-container":"#93000a","surface-tint":"#545e76","surface-variant":"#d1e4ff","outline":"#74777d","on-primary-container":"#79849d","surface-dim":"#c5dcfb","surface-container-low":"#eef4ff","secondary":"#47607e","on-tertiary-fixed-variant":"#6f3800","inverse-primary":"#bbc6e2","on-surface":"#031d34","background":"#f8f9ff","surface-container":"#e5efff","on-primary":"#ffffff","surface-bright":"#f8f9ff","inverse-on-surface":"#e9f1ff"},borderRadius:{DEFAULT:"0.125rem",lg:"0.25rem",xl:"0.5rem",full:"0.75rem"},fontFamily:{headline:["Manrope"],body:["Inter"],label:["Inter"]}}}}
+</script>
+<style>
+  .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;display:inline-block;line-height:1;text-transform:none;letter-spacing:normal;word-wrap:normal;white-space:nowrap;}
+  body{font-family:'Inter',sans-serif;background-color:#f8f9ff;}
+  .sidebar-active{background-color:#eef4ff;color:#000000;}
+</style>
+</head>
+<body class="text-on-background min-h-screen">
+  <header class="h-16 bg-primary flex items-center justify-between px-6 sticky top-0 z-40">
+    <div class="flex items-center gap-3">
+      <svg class="text-white size-6" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" fill="currentColor"/>
+      </svg>
+      <span class="font-headline font-bold text-white text-lg">BuildOS</span>
+    </div>
+    <a href="/dashboard" class="text-white/70 text-xs font-bold uppercase">Desktop →</a>
+  </header>
+
+  <div class="p-4 space-y-4 max-w-md mx-auto pb-20">
+    <!-- Project Selector -->
+    <div class="bg-surface-container-lowest rounded-full p-4 border border-outline-variant/10 shadow-sm">
+      <label class="text-[11px] font-bold uppercase tracking-widest text-on-surface-variant mb-2 block">Active Project</label>
+      <select id="project-selector" onchange="switchProject(this.value)" class="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 text-sm font-semibold"></select>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-2 gap-3">
+      <div class="bg-surface-container-lowest p-4 rounded-full border border-outline-variant/5 shadow-sm">
+        <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Budget Used</p>
+        <div class="font-headline text-2xl font-extrabold mt-1" id="m-pct">0%</div>
+        <div class="w-full bg-surface-container-highest h-1.5 mt-2 rounded-full overflow-hidden">
+          <div class="bg-secondary h-full" id="m-bar" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="bg-surface-container-lowest p-4 rounded-full border border-outline-variant/5 shadow-sm">
+        <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Low Stock</p>
+        <div class="font-headline text-2xl font-extrabold text-error mt-1" id="m-low">—</div>
+        <p class="text-[10px] text-on-surface-variant mt-1">items need restocking</p>
+      </div>
+    </div>
+
+    <!-- Quick Log Transaction -->
+    <div class="bg-surface-container-low rounded-full p-5 border border-outline-variant/5">
+      <h3 class="font-headline font-bold text-base mb-4">Log Movement</h3>
+      <div class="space-y-3">
+        <select id="m-material" class="w-full bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm"></select>
+        <div class="grid grid-cols-2 gap-2">
+          <select id="m-type" class="bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm">
+            <option value="in">↑ Stock In</option>
+            <option value="out">↓ Stock Out</option>
+          </select>
+          <input id="m-qty" type="number" min="0.01" step="0.01" class="bg-surface-container-lowest border-none rounded-xl py-3 px-4 text-sm" placeholder="Qty"/>
+        </div>
+        <button onclick="mobileLog()" class="w-full bg-secondary text-white font-bold py-3 rounded-xl text-sm">Log Transaction</button>
+        <p id="m-status" class="text-sm font-bold text-secondary text-center hidden"></p>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="bg-surface-container-lowest rounded-full border border-outline-variant/5 shadow-sm overflow-hidden">
+      <div class="p-4 border-b border-outline-variant/10">
+        <h3 class="font-headline font-bold text-base">Recent Activity</h3>
+      </div>
+      <div id="m-activity" class="divide-y divide-outline-variant/10">
+        <p class="p-8 text-center text-on-surface-variant text-sm">Loading...</p>
+      </div>
+    </div>
+  </div>
+
+<script>
+  let pid=localStorage.getItem('currentProjectId');
+  let mats=[];
+
+  async function init(){
+    const res=await fetch('/api/projects/');const projs=await res.json();
+    if(!projs.length)return;
+    if(!pid||!projs.find(p=>p.id===pid))pid=projs[0].id;
+    localStorage.setItem('currentProjectId',pid);
+    document.getElementById('project-selector').innerHTML=projs.map(p=>`<option value="${p.id}"${p.id===pid?' selected':''}>${p.name}</option>`).join('');
+    const mr=await fetch(`/api/materials/${pid}`);mats=await mr.json();
+    document.getElementById('m-material').innerHTML=mats.map(m=>`<option value="${m.id}">${m.name} (${m.quantity} ${m.unit})</option>`).join('');
+    await Promise.all([loadBudget(),loadLowStock(),loadActivity()]);
+  }
+
+  async function loadBudget(){
+    const r=await fetch(`/api/budget/${pid}`),b=await r.json();
+    document.getElementById('m-pct').textContent=b.percent_used+'%';
+    document.getElementById('m-bar').style.width=Math.min(b.percent_used,100)+'%';
+    document.getElementById('m-bar').className='h-full '+(b.is_overrun?'bg-error':'bg-secondary');
+  }
+  async function loadLowStock(){
+    const r=await fetch(`/api/materials/low-stock/${pid}`),items=await r.json();
+    document.getElementById('m-low').textContent=items.length;
+  }
+  async function loadActivity(){
+    const r=await fetch(`/api/transactions/${pid}`),txs=await r.json();
+    const el=document.getElementById('m-activity');
+    if(!txs.length){el.innerHTML='<p class="p-8 text-center text-on-surface-variant text-sm">No activity yet.</p>';return;}
+    const cols={in:'text-secondary',out:'text-error'};
+    el.innerHTML=txs.slice(0,8).map(tx=>`
+      <div class="flex items-center justify-between p-4">
+        <div>
+          <p class="font-bold text-sm">${tx.materials?.name||'Material'}</p>
+          <p class="text-xs text-on-surface-variant">${new Date(tx.created_at).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</p>
+        </div>
+        <span class="font-headline font-bold ${cols[tx.type]||'text-on-surface'}">${tx.type==='in'?'+':'−'}${tx.quantity}</span>
+      </div>`).join('');
+  }
+  async function mobileLog(){
+    const material_id=document.getElementById('m-material').value;
+    const type=document.getElementById('m-type').value;
+    const quantity=parseFloat(document.getElementById('m-qty').value);
+    if(!material_id||!quantity)return alert('Select material and qty.');
+    try{
+      await fetch('/api/transactions/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({material_id,project_id:pid,type,quantity,logged_by:'field-engineer'})});
+      const s=document.getElementById('m-status');s.textContent='✓ Logged!';s.classList.remove('hidden','text-error');s.classList.add('text-secondary');
+      setTimeout(()=>s.classList.add('hidden'),3000);
+      const mr=await fetch(`/api/materials/${pid}`);mats=await mr.json();
+      document.getElementById('m-material').innerHTML=mats.map(m=>`<option value="${m.id}">${m.name} (${m.quantity} ${m.unit})</option>`).join('');
+      await loadActivity();await loadLowStock();
+    }catch(e){
+      const s=document.getElementById('m-status');s.textContent='✗ '+e.message;s.classList.remove('hidden','text-secondary');s.classList.add('text-error');
+    }
+  }
+  function switchProject(id){localStorage.setItem('currentProjectId',id);window.location.reload();}
+  init().catch(console.error);
+</script>
+</body>
+</html>

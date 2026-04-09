@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BuildOS | Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config={darkMode:"class",theme:{extend:{colors:{"error-container":"#ffdad6","primary-fixed":"#d7e2ff","on-primary-fixed-variant":"#3c475d","surface-container-highest":"#d1e4ff","surface-container-lowest":"#ffffff","on-secondary-container":"#48617e","on-primary-fixed":"#101b30","error":"#ba1a1a","primary":"#000000","surface-container-high":"#dbe9ff","outline-variant":"#c4c6cc","tertiary":"#000000","primary-container":"#101b30","on-surface-variant":"#44474c","on-tertiary-fixed":"#2f1400","on-error":"#ffffff","tertiary-fixed":"#ffdcc4","secondary-container":"#c2dcff","inverse-surface":"#1b324a","on-secondary-fixed":"#001d36","tertiary-fixed-dim":"#ffb780","on-secondary":"#ffffff","surface":"#f8f9ff","on-tertiary-container":"#bb7336","on-tertiary":"#ffffff","secondary-fixed":"#d1e4ff","on-background":"#031d34","on-error-container":"#93000a","surface-tint":"#545e76","surface-variant":"#d1e4ff","outline":"#74777d","on-primary-container":"#79849d","surface-dim":"#c5dcfb","surface-container-low":"#eef4ff","secondary":"#47607e","on-tertiary-fixed-variant":"#6f3800","inverse-primary":"#bbc6e2","on-surface":"#031d34","background":"#f8f9ff","surface-container":"#e5efff","on-primary":"#ffffff","surface-bright":"#f8f9ff","inverse-on-surface":"#e9f1ff"},borderRadius:{DEFAULT:"0.125rem",lg:"0.25rem",xl:"0.5rem",full:"0.75rem"},fontFamily:{headline:["Manrope"],body:["Inter"],label:["Inter"]}}}}
+</script>
+<style>
+  .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;display:inline-block;line-height:1;text-transform:none;letter-spacing:normal;word-wrap:normal;white-space:nowrap;}
+  body{font-family:'Inter',sans-serif;background-color:#f8f9ff;}
+  .sidebar-active{background-color:#eef4ff;color:#000000;}
+</style>
+</head>
+<body class="text-on-background">
+<div class="flex min-h-screen">
+  <aside class="w-64 bg-surface border-r border-outline-variant/20 flex flex-col fixed h-full z-50">
+    <div class="p-6 flex items-center gap-3">
+      <div class="size-10 bg-primary flex items-center justify-center rounded-lg">
+        <svg class="text-white size-6" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" fill="currentColor"/></svg>
+      </div>
+      <div><h1 class="font-headline font-bold text-lg leading-none">BuildOS</h1><p class="text-on-surface-variant text-xs mt-1">Construction Management</p></div>
+    </div>
+    <nav class="flex-1 px-4 mt-4 flex flex-col gap-1">
+      <a href="/dashboard" class="sidebar-active flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">dashboard</span>Dashboard</a>
+      <a href="/inventory" class="text-on-surface-variant hover:bg-surface-container-low flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined">inventory_2</span>Inventory</a>
+      <a href="/finance" class="text-on-surface-variant hover:bg-surface-container-low flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined">payments</span>Finance</a>
+      <a href="/invoices" class="text-on-surface-variant hover:bg-surface-container-low flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined">receipt_long</span>Invoices</a>
+      <a href="/projects" class="text-on-surface-variant hover:bg-surface-container-low flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined">architecture</span>Projects</a>
+    </nav>
+    <div class="p-4 mt-auto border-t border-outline-variant/10">
+      <div class="flex items-center gap-3 p-2 rounded-xl bg-surface-container-low">
+        <div class="size-10 rounded-full bg-secondary flex items-center justify-center text-white font-bold text-sm">SM</div>
+        <div class="overflow-hidden"><p class="text-sm font-bold truncate">Site Manager</p><p class="text-xs text-on-surface-variant truncate">Director of Operations</p></div>
+      </div>
+    </div>
+  </aside>
+  <main class="flex-1 ml-64">
+    <header class="h-20 bg-surface/80 backdrop-blur-md border-b border-outline-variant/10 flex items-center justify-between px-10 sticky top-0 z-40">
+      <div class="flex items-center gap-6 flex-1">
+        <div><h2 class="font-headline text-xl font-bold">Dashboard</h2></div>
+        <div class="h-8 w-px bg-outline-variant/20"></div>
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-lg text-on-surface-variant">folder_open</span>
+          <select id="project-selector" onchange="switchProject(this.value)" class="bg-transparent border-none font-semibold text-on-surface-variant focus:ring-0 cursor-pointer text-sm"></select>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="flex items-center gap-1.5 text-[10px] font-bold tracking-widest uppercase py-1 px-3 bg-on-surface text-white rounded-lg">
+          <span class="w-1.5 h-1.5 bg-tertiary-fixed-dim rounded-full animate-pulse"></span> LIVE
+        </span>
+        <span class="text-[10px] font-bold uppercase py-1 px-3 bg-surface-container-low text-on-surface-variant rounded-lg border border-outline-variant/20" id="sync-label">SYNCING...</span>
+      </div>
+    </header>
+
+    <div class="p-10 max-w-[1600px] mx-auto space-y-8">
+      <section class="relative h-48 rounded-full overflow-hidden flex items-end p-10"
+               style="background-image: linear-gradient(to top, rgba(0,0,0,0.8), transparent), url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2070&auto=format&fit=crop'); background-size:cover; background-position:center;">
+        <div>
+          <span class="bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-bold tracking-[0.1em] uppercase py-1 px-3 rounded mb-3 inline-block">Command Center</span>
+          <h2 class="font-headline text-2xl font-extrabold text-white tracking-tight" id="hero-title">PROJECT PORTFOLIO OVERVIEW</h2>
+          <p class="text-white/70 text-sm mt-1" id="hero-tagline">Loading live data...</p>
+        </div>
+      </section>
+
+      <div class="grid grid-cols-4 gap-6">
+        <div class="bg-surface-container-lowest p-6 rounded-full border border-outline-variant/5 shadow-sm">
+          <p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Total Materials</p>
+          <div class="font-headline text-4xl font-extrabold text-on-surface" id="stat-materials">—</div>
+          <div class="mt-3 flex items-center gap-1 text-secondary font-bold text-[10px] uppercase"><span class="material-symbols-outlined text-sm">inventory_2</span> Active Stock</div>
+        </div>
+        <div class="bg-surface-container-lowest p-6 rounded-full border border-outline-variant/5 shadow-sm">
+          <p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Budget Disbursed</p>
+          <div class="font-headline text-4xl font-extrabold text-on-surface" id="stat-spent">₹0</div>
+          <div class="mt-3 text-on-surface-variant font-bold text-[10px] uppercase" id="stat-remaining">Loading...</div>
+        </div>
+        <div class="bg-surface-container-lowest p-6 rounded-full border border-outline-variant/5 shadow-sm">
+          <p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Active Projects</p>
+          <div class="font-headline text-4xl font-extrabold text-on-surface" id="stat-projects">—</div>
+          <div class="mt-3 text-secondary font-bold text-[10px] uppercase truncate" id="stat-sites">Loading...</div>
+        </div>
+        <div class="bg-surface-container-lowest p-6 rounded-full border border-outline-variant/5 shadow-sm">
+          <p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Resource Burn</p>
+          <div class="font-headline text-4xl font-extrabold text-on-surface" id="stat-pct">0%</div>
+          <div class="w-full bg-surface-container-highest h-1.5 mt-4 rounded-full overflow-hidden">
+            <div class="bg-secondary h-full transition-all duration-1000" id="stat-bar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-12 gap-8">
+        <div class="col-span-8 space-y-5">
+          <div class="flex items-center justify-between">
+            <h3 class="font-headline text-xl font-bold">Project Portfolio</h3>
+            <button onclick="document.getElementById('add-modal').classList.remove('hidden')"
+                    class="flex items-center gap-2 bg-primary text-white text-xs font-bold px-4 py-2 rounded-xl hover:opacity-90">
+              <span class="material-symbols-outlined text-sm">add</span> New Project
+            </button>
+          </div>
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-5" id="projects-grid">
+            <p class="col-span-2 text-center text-on-surface-variant py-16 text-sm">Loading...</p>
+          </div>
+        </div>
+        <div class="col-span-4 space-y-5">
+          <h3 class="font-headline text-xl font-bold">Site Pulse</h3>
+          <div class="bg-surface-container-low rounded-full p-7 relative overflow-hidden space-y-1">
+            <div class="absolute top-0 bottom-0 left-[2.3rem] w-px bg-outline-variant/30"></div>
+            <div class="space-y-7 relative" id="transactions-list">
+              <p class="text-sm text-on-surface-variant text-center py-8">Loading...</p>
+            </div>
+            <div class="pt-4 border-t border-outline-variant/10 mt-4">
+              <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-2">⚠ Low Stock</p>
+              <div id="low-stock-list"><p class="text-xs text-secondary font-bold uppercase">Checking...</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="add-modal" class="hidden fixed inset-0 bg-black/40 z-[100] flex items-center justify-center">
+  <div class="bg-surface-container-lowest rounded-full p-8 w-full max-w-md shadow-2xl space-y-4">
+    <h3 class="font-headline text-xl font-bold">New Project</h3>
+    <input id="new-name" class="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 text-sm" placeholder="Project Name"/>
+    <input id="new-location" class="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 text-sm" placeholder="Site Location"/>
+    <input id="new-budget" type="number" class="w-full bg-surface-container-low border-none rounded-xl py-3 px-4 text-sm" placeholder="Budget (₹)"/>
+    <div class="flex gap-3">
+      <button onclick="createProject()" class="flex-1 bg-primary text-white font-bold py-3 rounded-xl text-sm">Create</button>
+      <button onclick="document.getElementById('add-modal').classList.add('hidden')" class="flex-1 bg-surface-container-low text-on-surface-variant font-bold py-3 rounded-xl text-sm">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let pid = localStorage.getItem('currentProjectId');
+  let allProjects = [];
+
+  async function init() {
+    const res = await fetch('/api/projects/');
+    allProjects = await res.json();
+    if (!allProjects.length) { document.getElementById('projects-grid').innerHTML = '<p class="col-span-2 text-center text-on-surface-variant py-16 text-sm">No projects yet.</p>'; return; }
+    if (!pid || !allProjects.find(p => p.id === pid)) pid = allProjects[0].id;
+    localStorage.setItem('currentProjectId', pid);
+    const sel = document.getElementById('project-selector');
+    sel.innerHTML = allProjects.map(p => `<option value="${p.id}"${p.id===pid?' selected':''}>${p.name}</option>`).join('');
+    document.getElementById('stat-projects').textContent = String(allProjects.length).padStart(2,'0');
+    document.getElementById('stat-sites').textContent = allProjects.map(p=>p.name).join(', ');
+    document.getElementById('sync-label').textContent = 'LIVE: '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    document.getElementById('hero-tagline').textContent = allProjects.length+' active sites monitored in real-time.';
+    renderCards();
+    await Promise.all([loadBudget(),loadMaterials(),loadTransactions(),loadLowStock()]);
+  }
+
+  function renderCards() {
+    document.getElementById('projects-grid').innerHTML = allProjects.map(p=>`
+      <div onclick="switchProject('${p.id}')" class="bg-surface-container-lowest p-6 rounded-full border border-outline-variant/5 shadow-sm hover:shadow-md cursor-pointer group">
+        <div class="flex justify-between items-start mb-2">
+          <h4 class="font-headline font-bold text-lg group-hover:text-secondary">${p.name}</h4>
+          ${p.id===pid?'<span class="bg-secondary-container text-secondary text-[10px] font-bold px-2 py-0.5 rounded uppercase">Active</span>':''}
+        </div>
+        <p class="text-on-surface-variant text-sm">Budget: <span class="font-semibold text-on-surface">₹${Number(p.budget).toLocaleString('en-IN')}</span></p>
+        <p class="text-on-surface-variant text-xs mt-1">${p.site_location||'Location TBD'}</p>
+        <div class="flex justify-between pt-4 border-t border-outline-variant/10 mt-4">
+          <span class="text-xs text-on-surface-variant">${new Date(p.created_at).toLocaleDateString('en-IN')}</span>
+          <span class="text-secondary font-bold text-xs uppercase">Select →</span>
+        </div>
+      </div>`).join('') + `
+      <button onclick="document.getElementById('add-modal').classList.remove('hidden')"
+              class="bg-surface border-2 border-dashed border-outline-variant/30 p-6 rounded-full flex flex-col items-center justify-center gap-2 hover:bg-surface-container-low hover:border-outline transition-all">
+        <span class="material-symbols-outlined text-4xl text-on-surface-variant">add_circle</span>
+        <span class="font-bold text-sm text-on-surface-variant uppercase tracking-widest">Add New Project</span>
+      </button>`;
+  }
+
+  async function loadBudget() {
+    const r=await fetch(`/api/budget/${pid}`),b=await r.json();
+    document.getElementById('stat-spent').textContent=`₹${Number(b.spent).toLocaleString('en-IN')}`;
+    document.getElementById('stat-pct').textContent=`${b.percent_used}%`;
+    document.getElementById('stat-bar').style.width=`${Math.min(b.percent_used,100)}%`;
+    document.getElementById('stat-bar').className=`h-full transition-all duration-1000 ${b.is_overrun?'bg-error':'bg-secondary'}`;
+    document.getElementById('stat-remaining').textContent=`₹${Number(b.remaining).toLocaleString('en-IN')} remaining`;
+  }
+  async function loadMaterials() {
+    const r=await fetch(`/api/materials/${pid}`),m=await r.json();
+    document.getElementById('stat-materials').textContent=m.length;
+  }
+  async function loadTransactions() {
+    const r=await fetch(`/api/transactions/${pid}`),txs=await r.json();
+    const el=document.getElementById('transactions-list');
+    if(!txs.length){el.innerHTML='<p class="text-sm text-on-surface-variant text-center py-8">No activity yet.</p>';return;}
+    const cols={in:'bg-secondary text-white',out:'bg-tertiary-fixed text-on-tertiary-fixed'};
+    const icons={in:'local_shipping',out:'output'};
+    el.innerHTML=txs.slice(0,4).map(tx=>`
+      <div class="flex gap-5">
+        <div class="size-8 rounded-full ${cols[tx.type]||'bg-surface-container-highest text-secondary'} flex items-center justify-center shrink-0 z-10 shadow-lg">
+          <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">${icons[tx.type]||'receipt'}</span>
+        </div>
+        <div>
+          <p class="text-[10px] font-bold text-secondary uppercase tracking-widest">${new Date(tx.created_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})} • ${tx.type==='in'?'Stock In':'Stock Out'}</p>
+          <h5 class="font-bold text-sm mt-0.5">${tx.materials?.name||'Material'}</h5>
+          <p class="text-on-surface-variant text-xs leading-relaxed">${tx.quantity} ${tx.materials?.unit||'units'} ${tx.type==='in'?'received':'dispatched'}. ${tx.note||''}</p>
+        </div>
+      </div>`).join('');
+  }
+  async function loadLowStock() {
+    const r=await fetch(`/api/materials/low-stock/${pid}`),items=await r.json();
+    const el=document.getElementById('low-stock-list');
+    if(!items.length){el.innerHTML='<p class="text-xs text-secondary font-bold uppercase">✓ All stock healthy</p>';return;}
+    el.innerHTML=items.slice(0,3).map(m=>`
+      <div class="flex items-center justify-between py-1">
+        <span class="text-xs font-bold text-on-surface">${m.name}</span>
+        <span class="text-[10px] font-bold text-error uppercase">${m.quantity} ${m.unit} left</span>
+      </div>`).join('');
+  }
+  async function createProject() {
+    const name=document.getElementById('new-name').value.trim();
+    const loc=document.getElementById('new-location').value.trim();
+    const budget=document.getElementById('new-budget').value;
+    if(!name||!budget)return alert('Name and budget required.');
+    await fetch('/api/projects/',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,site_location:loc,budget:parseFloat(budget)})});
+    document.getElementById('add-modal').classList.add('hidden');
+    window.location.reload();
+  }
+  function switchProject(id){localStorage.setItem('currentProjectId',id);window.location.reload();}
+  init().catch(console.error);
+</script>
+</body>
+</html>
