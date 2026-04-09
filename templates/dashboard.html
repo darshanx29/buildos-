@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Samarth Devlopers| Master Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#6366f1",
+          "background-stone": "#f1f0ee",
+          "surface-beige": "#eae8e4",
+          "outline-muted": "#dcdad5",
+        },
+        borderRadius: { DEFAULT: "0.5rem", lg: "0.75rem", xl: "1.25rem", full: "9999px" }
+      }
+    }
+  }
+</script>
+<style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    
+    body { 
+        -webkit-font-smoothing: antialiased; 
+        /* ADD YOUR BACKGROUND IMAGE URL BELOW */
+        background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=2070'); 
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+    }
+
+    /* Subtle overlay to make text pop while keeping the image visible */
+    .bg-overlay {
+        background: rgba(241, 240, 230, 0.88);
+        backdrop-blur: 2px;
+    }
+
+    /* Glassmorphism effect for the "Subtle Oatmeal" cards */
+    .glass-card {
+        background: rgba(234, 232, 228, 0.7) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .nav-glass {
+        background: rgba(255, 255, 255, 0.6) !important;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+</style>
+</head>
+<body class="min-h-screen font-['Inter'] relative">
+
+<div class="fixed inset-0 bg-overlay -z-10"></div>
+
+<header class="fixed top-0 w-full z-50 nav-glass border-b border-outline-muted/50">
+  <div class="max-w-7xl mx-auto px-8 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-10">
+      <span class="text-xl font-extrabold tracking-tight text-slate-800">CONSTRUCT<span class="text-primary">OS</span></span>
+      <nav class="hidden md:flex items-center gap-2">
+        <a href="/dashboard" class="flex items-center gap-2 px-4 py-2 bg-white/60 text-primary rounded-xl font-bold text-sm shadow-sm transition-all border border-white/40">
+          <span class="material-symbols-outlined text-[20px]">dashboard</span> Dashboard
+        </a>
+        <a href="/inventory" class="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-primary hover:bg-white/40 rounded-xl font-semibold text-sm transition-all">
+          <span class="material-symbols-outlined text-[20px]">inventory_2</span> Inventory
+        </a>
+        <a href="/finance" class="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-primary hover:bg-white/40 rounded-xl font-semibold text-sm transition-all">
+          <span class="material-symbols-outlined text-[20px]">payments</span> Finance
+        </a>
+        <a href="/invoices" class="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-primary hover:bg-white/40 rounded-xl font-semibold text-sm transition-all">
+          <span class="material-symbols-outlined text-[20px]">receipt_long</span> Invoices
+        </a>
+      </nav>
+    </div>
+
+    <div class="flex items-center gap-4">
+      <div class="flex items-center bg-white/40 px-3 py-1.5 rounded-xl border border-white/40 focus-within:bg-white/80 transition-all">
+        <span class="material-symbols-outlined text-slate-400 text-sm mr-2">search</span>
+        <input class="bg-transparent border-none focus:ring-0 text-xs w-40" placeholder="Global search..." type="text"/>
+      </div>
+      <div class="h-6 w-px bg-slate-300 mx-1"></div>
+      <select id="project-selector" onchange="switchProject(this.value)" 
+              class="text-xs bg-transparent border-none font-bold text-slate-700 focus:ring-0 cursor-pointer">
+      </select>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto pt-28 px-8 pb-20">
+  <div class="flex justify-between items-end mb-12">
+    <div>
+      <h1 class="text-4xl font-black tracking-tight text-slate-900 mb-2">Master Command Center</h1>
+      <div class="flex items-center gap-3">
+        <span class="flex items-center gap-1.5 text-[10px] font-bold tracking-widest uppercase py-1 px-3 bg-slate-900 text-white rounded-lg">
+          <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span> LIVE TELEMETRY
+        </span>
+        <span class="text-[10px] font-bold tracking-widest uppercase py-1 px-3 glass-card text-slate-600 rounded-lg border border-outline-muted" id="sync-label">SYNCING...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+    <div class="glass-card p-6 rounded-2xl shadow-sm group hover:scale-[1.02] transition-transform">
+      <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Total Materials</p>
+      <div class="text-4xl font-black text-slate-900" id="stat-materials">1</div>
+      <div class="mt-4 flex items-center gap-1 text-emerald-600 font-bold text-[10px] uppercase">
+        <span class="material-symbols-outlined text-sm">inventory_2</span> Active Stock
+      </div>
+    </div>
+
+    <div class="glass-card p-6 rounded-2xl shadow-sm hover:scale-[1.02] transition-transform">
+      <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Budget Disbursed</p>
+      <div class="text-4xl font-black text-slate-900" id="stat-spent">₹0</div>
+      <div class="mt-4 text-slate-500 font-bold text-[10px] uppercase" id="stat-remaining">Loading budget...</div>
+    </div>
+
+    <div class="glass-card p-6 rounded-2xl shadow-sm hover:scale-[1.02] transition-transform">
+      <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Active Projects</p>
+      <div class="text-4xl font-black text-slate-900" id="stat-projects">03</div>
+      <div class="mt-4 text-primary font-bold text-[10px] uppercase truncate" id="stat-sites">Ganga, Andheri East</div>
+    </div>
+
+    <div class="glass-card p-6 rounded-2xl shadow-sm hover:scale-[1.02] transition-transform">
+      <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Resource Burn</p>
+      <div class="text-4xl font-black text-slate-900" id="stat-pct">0%</div>
+      <div class="w-full bg-slate-200/50 h-1.5 mt-5 rounded-full overflow-hidden">
+        <div class="bg-primary h-full transition-all duration-1000" id="stat-bar" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+    <div class="lg:col-span-2 glass-card rounded-2xl shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-outline-muted/50 bg-white/30">
+            <h3 class="text-xs font-black uppercase tracking-widest text-slate-700">Recent Activity Ledger</h3>
+        </div>
+        <div id="transactions-list" class="divide-y divide-outline-muted/40">
+            <p class="p-20 text-center text-sm text-slate-400 italic font-medium">No recent records found.</p>
+        </div>
+    </div>
+
+    <div class="space-y-8">
+        <section class="glass-card rounded-2xl shadow-sm overflow-hidden border-t-4 border-rose-500">
+            <div class="p-5 flex items-center justify-between border-b border-outline-muted/50">
+                <h3 class="text-[10px] font-black tracking-widest uppercase text-slate-900">Stock Watchlist</h3>
+                <span class="text-[10px] bg-rose-500 text-white px-2 py-0.5 rounded-full font-bold" id="low-count">0</span>
+            </div>
+            <div class="p-4" id="low-stock-list">
+                <p class="text-center text-xs text-emerald-600 font-bold uppercase py-4">Stock Stable</p>
+            </div>
+        </section>
+
+        <section class="p-6 rounded-2xl border-2 border-dashed border-outline-muted bg-white/20">
+            <h3 class="text-[10px] font-black tracking-widest uppercase text-slate-400 mb-6">Project Directory</h3>
+            <div class="space-y-3" id="projects-list">
+                </div>
+        </section>
+    </div>
+  </div>
+</main>
+
+<script>
+  // Logic remains consistent with your previous version
+  let currentProjectId = localStorage.getItem('currentProjectId');
+
+  async function init() {
+    const res = await fetch('/api/projects/');
+    const projects = await res.json();
+    if (!projects.length) return;
+
+    if (!currentProjectId || !projects.find(p=>p.id===currentProjectId))
+      currentProjectId = projects[0].id;
+    localStorage.setItem('currentProjectId', currentProjectId);
+
+    const sel = document.getElementById('project-selector');
+    sel.innerHTML = projects.map(p=>`<option value="${p.id}"${p.id===currentProjectId?' selected':''}>${p.name}</option>`).join('');
+
+    document.getElementById('stat-projects').textContent = String(projects.length).padStart(2,'0');
+    document.getElementById('sync-label').textContent = 'LIVE: ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+    document.getElementById('projects-list').innerHTML = projects.map(p=>`
+      <div class="p-4 bg-white/60 hover:bg-white transition-all rounded-xl cursor-pointer border border-white/50 shadow-sm" onclick="switchProject('${p.id}')">
+        <p class="text-xs font-bold text-slate-900 mb-1">${p.name}</p>
+        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tight">₹${Number(p.budget).toLocaleString('en-IN')}</p>
+      </div>`).join('');
+
+    await Promise.all([loadBudget(), loadMaterials(), loadTransactions(), loadLowStock()]);
+  }
+
+  // Budget, Materials, Transactions, LowStock functions remain the same as previous logic
+  async function loadBudget() {
+    const r = await fetch(`/api/budget/${currentProjectId}`);
+    const b = await r.json();
+    document.getElementById('stat-spent').textContent = `₹${Number(b.spent).toLocaleString('en-IN')}`;
+    document.getElementById('stat-pct').textContent = `${b.percent_used}%`;
+    document.getElementById('stat-bar').style.width = `${Math.min(b.percent_used,100)}%`;
+    document.getElementById('stat-remaining').textContent = `₹${Number(b.remaining).toLocaleString('en-IN')} remaining`;
+  }
+
+  async function loadMaterials() {
+    const r = await fetch(`/api/materials/${currentProjectId}`);
+    const m = await r.json();
+    document.getElementById('stat-materials').textContent = m.length;
+  }
+
+  async function loadTransactions() {
+    const r = await fetch(`/api/transactions/${currentProjectId}`);
+    const txs = await r.json();
+    const el = document.getElementById('transactions-list');
+    if (!txs.length) return;
+    el.innerHTML = txs.slice(0,6).map(tx=>`
+      <div class="flex items-center justify-between p-5 hover:bg-white/40 transition-colors">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 flex items-center justify-center rounded-xl ${tx.type==='in'?'bg-emerald-100 text-emerald-600':'bg-rose-100 text-rose-600'}">
+            <span class="material-symbols-outlined text-[20px]">${tx.type==='in'?'add':'remove'}</span>
+          </div>
+          <div>
+            <p class="text-sm font-bold text-slate-900">${tx.materials?.name||'Batch Material'}</p>
+            <p class="text-[10px] text-slate-400 font-black uppercase tracking-tight">${tx.type==='in'?'Inbound':'Outbound'}</p>
+          </div>
+        </div>
+        <div class="text-right">
+          <p class="text-sm font-black ${tx.type==='in'?'text-emerald-600':'text-rose-600'}">${tx.type==='in'?'+':'−'}${tx.quantity}</p>
+        </div>
+      </div>`).join('');
+  }
+
+  async function loadLowStock() {
+    const r = await fetch(`/api/materials/low-stock/${currentProjectId}`);
+    const items = await r.json();
+    document.getElementById('low-count').textContent = items.length;
+    const el = document.getElementById('low-stock-list');
+    if (!items.length) return;
+    el.innerHTML = items.slice(0,3).map(m=>`
+      <div class="p-4 bg-white/40 border border-white/50 rounded-xl mb-2">
+        <h4 class="text-xs font-bold text-slate-900">${m.name}</h4>
+        <p class="text-[10px] text-rose-500 font-black mt-1">${m.quantity} ${m.unit} LEFT</p>
+      </div>`).join('');
+  }
+
+  function switchProject(id) {
+    localStorage.setItem('currentProjectId', id);
+    location.reload();
+  }
+
+  init().catch(console.error);
+</script>
+</body>
+</html>

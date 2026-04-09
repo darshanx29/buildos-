@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Samarth Devlopers | Projects</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary":"#6366f1"},fontFamily:{sans:['"Plus Jakarta Sans"','sans-serif'],ui:['"Outfit"','sans-serif']}}}}
+</script>
+<style>
+    body { font-family: 'Outfit', sans-serif; background-color: #f1f0ee; }
+    .project-card { background: white; border-radius: 1.5rem; transition: all 0.3s ease; border: 1px solid #e4e4e7; }
+    .project-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); border-color: #6366f1; }
+</style>
+</head>
+<body class="bg-background-stone antialiased">
+
+<header class="w-full sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 px-8 py-4 flex items-center justify-between">
+    <span class="text-xl font-extrabold tracking-tight text-slate-800 font-sans">CONSTRUCT<span class="text-primary">OS</span></span>
+    <button onclick="openAddModal()" class="px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest bg-slate-900 text-white hover:bg-slate-800 transition-all">+ New Site</button>
+</header>
+
+<main class="max-w-7xl mx-auto p-10">
+    <div class="mb-12">
+        <h2 class="text-4xl font-extrabold tracking-tighter text-slate-900 font-sans">Project Directory</h2>
+        <p class="text-slate-500 font-medium mt-1">Select an active construction site to manage resources.</p>
+    </div>
+
+    <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        </div>
+</main>
+
+<script>
+    async function loadProjects() {
+        const res = await fetch('/api/projects/');
+        const projects = await res.json();
+        const grid = document.getElementById('projects-grid');
+        
+        grid.innerHTML = projects.map(p => `
+            <div class="project-card p-8 flex flex-col justify-between h-full cursor-pointer" onclick="selectProject('${p.id}')">
+                <div>
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-12 h-12 bg-indigo-50 text-primary flex items-center justify-center rounded-2xl font-bold text-lg font-sans">
+                            ${p.name.slice(0,2).toUpperCase()}
+                        </div>
+                        <span class="px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase rounded-lg">Active Site</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2 font-sans">${p.name}</h3>
+                    <p class="text-xs text-slate-500 font-medium flex items-center gap-1 mb-6">
+                        <span class="material-symbols-outlined text-sm">location_on</span> ${p.site_location || 'Not Specified'}
+                    </p>
+                </div>
+                <div class="pt-6 border-t border-slate-100 flex justify-between items-center">
+                    <div class="text-[10px] font-black uppercase tracking-widest text-slate-400">Project Budget</div>
+                    <div class="text-sm font-extrabold text-slate-900 font-sans">₹${Number(p.budget).toLocaleString('en-IN')}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+    function selectProject(id) { localStorage.setItem('currentProjectId', id); window.location.href = '/dashboard'; }
+    loadProjects();
+</script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Site Engineer | BuildOS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary":"#00236f","primary-container":"#1e3a8a","on-primary":"#ffffff","secondary-container":"#d5e3fc","on-secondary-container":"#57657a","surface":"#f7f9fb","surface-container-low":"#f2f4f6","surface-container-lowest":"#ffffff","on-surface":"#191c1e","on-surface-variant":"#444651","tertiary-fixed":"#ffddb8","on-tertiary-fixed":"#2a1700","on-tertiary-fixed-variant":"#653e00","on-tertiary-container":"#ef9900","outline":"#757682","outline-variant":"#c5c5d3","error":"#ba1a1a","error-container":"#ffdad6","on-error-container":"#93000a"},borderRadius:{DEFAULT:"0.5rem",lg:"1rem",xl:"1.5rem",full:"9999px"}}}}</script>
+<style>body{font-family:'Inter',sans-serif}.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}</style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen pb-24">
+
+<header class="w-full sticky top-0 z-50 bg-white/80 backdrop-blur-md shadow-sm border-b border-slate-200/50 flex items-center justify-between px-6 py-3">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-white"><span class="material-symbols-outlined text-sm">architecture</span></div>
+    <h1 class="text-xl font-semibold text-blue-900 tracking-tight">BuildOS</h1>
+  </div>
+  <div class="flex items-center gap-3">
+    <div id="sync-badge" class="flex items-center gap-1 text-xs font-bold text-on-tertiary-container"><span class="material-symbols-outlined text-sm">cloud_done</span>Synced</div>
+  </div>
+</header>
+
+<main class="px-4 py-6 space-y-6">
+  <!-- Site info -->
+  <div class="bg-surface-container-lowest p-5 rounded-xl border-l-4 border-primary">
+    <div class="flex justify-between items-start">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-1">Current Active Site</p>
+        <h2 class="text-2xl font-bold text-primary" id="site-name">Loading...</h2>
+        <p class="text-sm text-on-surface-variant mt-1 flex items-center gap-1"><span class="material-symbols-outlined text-sm">location_on</span><span id="site-loc">—</span></p>
+      </div>
+      <span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed-variant text-[10px] font-bold rounded-full uppercase">In Progress</span>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-2 gap-4">
+    <div class="bg-surface-container-low p-4 rounded-xl">
+      <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Materials</p>
+      <div class="flex items-baseline gap-2">
+        <span class="text-3xl font-extrabold text-primary" id="stat-materials">—</span>
+        <span class="text-xs text-on-surface-variant">items</span>
+      </div>
+    </div>
+    <div class="bg-surface-container-low p-4 rounded-xl">
+      <p class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Low Stock</p>
+      <div class="flex items-baseline gap-2">
+        <span class="text-3xl font-extrabold text-on-tertiary-container" id="stat-alerts">—</span>
+        <span class="text-xs font-medium text-on-tertiary-fixed-variant flex items-center"><span class="material-symbols-outlined text-xs mr-0.5">priority_high</span>Alerts</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Low stock alert -->
+  <div id="low-stock-alert" class="hidden p-4 bg-error-container text-on-error-container rounded-xl flex items-center gap-3">
+    <span class="material-symbols-outlined">warning</span>
+    <span id="low-stock-names" class="text-sm font-bold"></span>
+  </div>
+
+  <!-- Quick actions -->
+  <section class="space-y-3">
+    <h3 class="text-sm font-bold text-on-surface-variant uppercase tracking-widest">Primary Operations</h3>
+    <button onclick="openStockInModal()" class="relative overflow-hidden w-full bg-primary-container text-white p-5 rounded-xl active:scale-[0.98] transition-transform text-left">
+      <div class="flex items-center justify-between">
+        <div><h4 class="text-xl font-bold mb-1">Log Stock In</h4><p class="text-white/70 text-sm">Record delivery / materials received</p></div>
+        <span class="material-symbols-outlined text-2xl">local_shipping</span>
+      </div>
+    </button>
+    <button onclick="openStockOutModal()" class="relative overflow-hidden w-full bg-surface-container-lowest border-2 border-primary/10 p-5 rounded-xl active:scale-[0.98] transition-transform text-left">
+      <div class="flex items-center justify-between">
+        <div><h4 class="text-xl font-bold text-primary mb-1">Log Material Usage</h4><p class="text-on-surface-variant text-sm">Update site inventory consumption</p></div>
+        <span class="material-symbols-outlined text-2xl text-primary">edit_note</span>
+      </div>
+    </button>
+    <a href="/inventory" class="relative overflow-hidden w-full bg-tertiary-fixed text-on-tertiary-fixed p-5 rounded-xl active:scale-[0.98] transition-transform flex items-center justify-between">
+      <div><h4 class="text-xl font-bold mb-1">View Inventory</h4><p class="text-on-tertiary-fixed-variant text-sm">Full stock list and status</p></div>
+      <span class="material-symbols-outlined text-2xl text-on-tertiary-fixed-variant">inventory_2</span>
+    </a>
+  </section>
+
+  <!-- Recent logs -->
+  <section class="space-y-3">
+    <h3 class="text-sm font-bold text-on-surface-variant uppercase tracking-widest">Recent Logs</h3>
+    <div id="recent-logs" class="space-y-3">
+      <p class="text-sm text-on-surface-variant px-1">Loading...</p>
+    </div>
+  </section>
+</main>
+
+<!-- Bottom nav -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 bg-white/90 backdrop-blur-lg rounded-t-xl border-t border-slate-200 z-50">
+  <a href="/dashboard" class="flex flex-col items-center text-slate-500"><span class="material-symbols-outlined">dashboard</span><span class="text-[10px] font-bold uppercase">Home</span></a>
+  <a href="/mobile" class="flex flex-col items-center bg-blue-50 text-blue-900 rounded-xl px-4 py-1"><span class="material-symbols-outlined">edit_note</span><span class="text-[10px] font-bold uppercase">Log</span></a>
+  <a href="/inventory" class="flex flex-col items-center text-slate-500"><span class="material-symbols-outlined">inventory_2</span><span class="text-[10px] font-bold uppercase">Stock</span></a>
+  <a href="/invoices" class="flex flex-col items-center text-slate-500"><span class="material-symbols-outlined">receipt_long</span><span class="text-[10px] font-bold uppercase">Invoices</span></a>
+</nav>
+
+<!-- Stock In Modal -->
+<div id="in-modal" class="hidden fixed inset-0 bg-black/40 z-50 flex items-end justify-center">
+  <div class="bg-white rounded-t-2xl p-6 w-full max-w-md shadow-2xl">
+    <h3 class="text-lg font-bold mb-4">Log Stock In (Delivery)</h3>
+    <div class="space-y-3">
+      <select id="in-material" class="w-full px-4 py-3 bg-surface-container-low rounded-xl border-none text-sm focus:ring-2 focus:ring-primary/30"></select>
+      <input id="in-qty" type="number" placeholder="Quantity received" class="w-full px-4 py-3 bg-surface-container-low rounded-xl border-none text-sm focus:ring-2 focus:ring-primary/30"/>
+      <input id="in-note" placeholder="Supplier / note (optional)" class="w-full px-4 py-3 bg-surface-container-low rounded-xl border-none text-sm focus:ring-2 focus:ring-primary/30"/>
+    </div>
+    <div class="flex gap-3 mt-5">
+      <button onclick="document.getElementById('in-modal').classList.add('hidden')" class="flex-1 py-3 border border-outline-variant rounded-xl text-sm font-medium">Cancel</button>
+      <button onclick="submitStockIn()" class="flex-1 py-3 bg-primary text-white rounded-xl text-sm font-bold">Confirm Receipt</button>
+    </div>
+  </div>
+</div>
+
+<!-- Stock Out Modal -->
+<div id="out-modal" class="hidden fixed inset-0 bg-black/40 z-50 flex items-end justify-center">
+  <div class="bg-white rounded-t-2xl p-6 w-full max-w-md shadow-2xl">
+    <h3 class="text-lg font-bold mb-4">Log Material Usage</h3>
+    <div class="space-y-3">
+      <select id="out-material" class="w-full px-4 py-3 bg-surface-container-low rounded-xl border-none text-sm focus:ring-2 focus:ring-primary/30"></select>
+      <input id="out-qty" type="number" placeholder="Quantity used" class="w-full px-4 py-3 bg-surface-container-low rounded-xl border-none text-sm focus:ring-2 focus:ring-primary/30"/>
+      <input id="out-note" placeholder="Work area / note (optional)" class="w-full px-4 py-3 bg-surface-container-low rounded-xl border-none text-sm focus:ring-2 focus:ring-primary/30"/>
+    </div>
+    <div class="flex gap-3 mt-5">
+      <button onclick="document.getElementById('out-modal').classList.add('hidden')" class="flex-1 py-3 border border-outline-variant rounded-xl text-sm font-medium">Cancel</button>
+      <button onclick="submitStockOut()" class="flex-1 py-3 bg-primary text-white rounded-xl text-sm font-bold">Confirm Usage</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" style="opacity:0;transition:opacity 0.3s" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-xl text-sm font-bold bg-on-surface text-white pointer-events-none"></div>
+
+<script src="/static/js/api.js"></script>
+<script>
+let currentPid = null;
+let allMaterials = [];
+
+async function init() {
+  const projects = await getProjects();
+  let pid = getActiveProject();
+  if (!pid && projects.length) { pid = projects[0].id; setActiveProject(pid); }
+  currentPid = pid;
+  await loadMobile(pid);
+}
+
+async function loadMobile(pid) {
+  if (!pid) return;
+  const [proj, materials, lowStock, transactions] = await Promise.all([
+    getProject(pid), getMaterials(pid), getLowStock(pid), getTransactions(pid)
+  ]);
+  allMaterials = materials;
+  document.getElementById('site-name').textContent = proj.name;
+  document.getElementById('site-loc').textContent = proj.site_location || 'Main Site';
+  document.getElementById('stat-materials').textContent = materials.length;
+  document.getElementById('stat-alerts').textContent = lowStock.length;
+
+  if (lowStock.length) {
+    document.getElementById('low-stock-alert').classList.remove('hidden');
+    document.getElementById('low-stock-names').textContent = `Low stock: ${lowStock.map(m=>m.name).join(', ')}`;
+  }
+
+  const matOpts = materials.map(m => `<option value="${m.id}">${m.name} (${m.quantity} ${m.unit})</option>`).join('');
+  document.getElementById('in-material').innerHTML = `<option value="">Select material</option>${matOpts}`;
+  document.getElementById('out-material').innerHTML = `<option value="">Select material</option>${matOpts}`;
+
+  const icons = { in: { icon: 'local_shipping', bg: 'bg-blue-100', color: 'text-blue-900' }, out: { icon: 'edit_note', bg: 'bg-amber-100', color: 'text-amber-900' } };
+  document.getElementById('recent-logs').innerHTML = transactions.slice(0, 5).map(t => {
+    const ic = icons[t.type] || icons.out;
+    return `<div class="bg-surface-container-lowest p-4 rounded-lg flex items-center gap-4">
+      <div class="w-12 h-12 rounded-md ${ic.bg} flex items-center justify-center ${ic.color}"><span class="material-symbols-outlined">${ic.icon}</span></div>
+      <div class="flex-1">
+        <div class="flex justify-between"><p class="font-bold text-on-surface">${t.materials?.name || '—'}</p><p class="text-xs font-bold text-primary">${timeAgo(t.created_at)}</p></div>
+        <p class="text-xs text-on-surface-variant">${t.type === 'in' ? 'Received' : 'Used'}: ${t.quantity} ${t.materials?.unit || ''} ${t.note ? '· '+t.note : ''}</p>
+      </div>
+    </div>`;
+  }).join('') || '<p class="text-sm text-on-surface-variant px-1">No activity yet.</p>';
+}
+
+function openStockInModal() { document.getElementById('in-modal').classList.remove('hidden'); }
+function openStockOutModal() { document.getElementById('out-modal').classList.remove('hidden'); }
+
+async function submitStockIn() {
+  const material_id = document.getElementById('in-material').value;
+  const quantity = parseFloat(document.getElementById('in-qty').value);
+  const note = document.getElementById('in-note').value;
+  if (!material_id || !quantity) { showToast('Select material and quantity', 'error'); return; }
+  await logTransaction({ material_id, project_id: currentPid, type: 'in', quantity, note });
+  document.getElementById('in-modal').classList.add('hidden');
+  showToast('Stock received and logged');
+  await loadMobile(currentPid);
+}
+
+async function submitStockOut() {
+  const material_id = document.getElementById('out-material').value;
+  const quantity = parseFloat(document.getElementById('out-qty').value);
+  const note = document.getElementById('out-note').value;
+  if (!material_id || !quantity) { showToast('Select material and quantity', 'error'); return; }
+  try {
+    await logTransaction({ material_id, project_id: currentPid, type: 'out', quantity, note });
+    document.getElementById('out-modal').classList.add('hidden');
+    showToast('Usage logged successfully');
+    await loadMobile(currentPid);
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+init().catch(() => showToast('Cannot connect to server. Is Flask running?', 'error'));
+</script>
+</body>
+</html>
