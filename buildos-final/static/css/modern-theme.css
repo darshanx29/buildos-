@@ -1,0 +1,100 @@
+body{
+  background:
+    radial-gradient(circle at 0% 0%, rgba(120,119,198,0.34), transparent 36%),
+    radial-gradient(circle at 95% 0%, rgba(46,196,182,0.25), transparent 42%),
+    linear-gradient(145deg, #070b1a 0%, #111936 50%, #1d2b5c 100%) !important;
+  color:#eaf1ff !important;
+  min-height:100vh;
+}
+
+.bg-surface,.bg-surface\/80{
+  background:rgba(10,16,36,0.88) !important;
+}
+
+.bg-surface-container-lowest,
+.bg-surface-container-low,
+.bg-surface-container,
+.bg-surface-container-high{
+  background:rgba(16,24,49,0.78) !important;
+  border:1px solid rgba(145,180,255,0.2) !important;
+  backdrop-filter:blur(8px);
+}
+
+.border-outline-variant\/20,
+.border-outline-variant\/10,
+.border-outline-variant\/5{
+  border-color:rgba(145,180,255,0.2) !important;
+}
+
+.text-on-background,.text-on-surface,.text-on-surface-variant{
+  color:#dce8ff !important;
+}
+
+.text-secondary{color:#78f4e1 !important;}
+.bg-secondary{background:linear-gradient(135deg,#3ee7ff,#2ad59f) !important;color:#062a31 !important;}
+.bg-secondary-container{background:rgba(72,245,211,0.2) !important;}
+.text-error{color:#ff7b98 !important;}
+.bg-error-container{background:rgba(255,123,152,0.22) !important;}
+.bg-primary{
+  background:linear-gradient(140deg,#89b4ff,#72ffe2) !important;
+  color:#031022 !important;
+}
+
+.sidebar-active{
+  background:linear-gradient(140deg,rgba(127,164,255,0.35),rgba(114,255,226,0.2)) !important;
+  color:#f7fbff !important;
+  border:1px solid rgba(145,180,255,0.35);
+}
+
+header{
+  box-shadow:0 10px 35px rgba(8,16,44,0.45);
+}
+
+input,select,textarea{
+  background:rgba(8,13,31,0.82) !important;
+  color:#eaf1ff !important;
+  border:1px solid rgba(145,180,255,0.24) !important;
+}
+
+button{
+  transition:transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+}
+button:hover{
+  transform:translateY(-1px);
+  box-shadow:0 8px 20px rgba(12,20,49,0.35);
+}
+
+table thead{
+  background:rgba(20,31,64,0.95) !important;
+}
+
+tbody tr:hover{
+  background:rgba(84,120,217,0.12) !important;
+}
+
+/* Matches a common medium breakpoint for stacked navigation on smaller screens */
+@media (max-width: 1024px){
+  .flex.min-h-screen{display:block;}
+  .flex.min-h-screen > aside{
+    position:static !important;
+    width:100% !important;
+    height:auto !important;
+  }
+  .flex.min-h-screen > main{
+    margin-left:0 !important;
+  }
+  .app-sidebar .main-nav{
+    display:grid !important;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+
+@media (max-width: 768px){
+  .p-10{padding:1.25rem !important;}
+  .grid.grid-cols-4,.grid.grid-cols-3,.grid.grid-cols-12{
+    grid-template-columns:1fr !important;
+  }
+  .col-span-8,.col-span-4{
+    grid-column:span 1 / span 1 !important;
+  }
+}

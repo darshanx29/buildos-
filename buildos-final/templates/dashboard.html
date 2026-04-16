@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="{{ url_for('static', filename='css/modern-theme.css') }}" rel="stylesheet"/>
 <script id="tailwind-config">
   tailwind.config={darkMode:"class",theme:{extend:{colors:{"error-container":"#ffdad6","primary-fixed":"#d7e2ff","on-primary-fixed-variant":"#3c475d","surface-container-highest":"#d1e4ff","surface-container-lowest":"#ffffff","on-secondary-container":"#48617e","on-primary-fixed":"#101b30","error":"#ba1a1a","primary":"#000000","surface-container-high":"#dbe9ff","outline-variant":"#c4c6cc","tertiary":"#000000","primary-container":"#101b30","on-surface-variant":"#44474c","on-tertiary-fixed":"#2f1400","on-error":"#ffffff","tertiary-fixed":"#ffdcc4","secondary-container":"#c2dcff","inverse-surface":"#1b324a","on-secondary-fixed":"#001d36","tertiary-fixed-dim":"#ffb780","on-secondary":"#ffffff","surface":"#f8f9ff","on-tertiary-container":"#bb7336","on-tertiary":"#ffffff","secondary-fixed":"#d1e4ff","on-background":"#031d34","on-error-container":"#93000a","surface-tint":"#545e76","surface-variant":"#d1e4ff","outline":"#74777d","on-primary-container":"#79849d","surface-dim":"#c5dcfb","surface-container-low":"#eef4ff","secondary":"#47607e","on-tertiary-fixed-variant":"#6f3800","inverse-primary":"#bbc6e2","on-surface":"#031d34","background":"#f8f9ff","surface-container":"#e5efff","on-primary":"#ffffff","surface-bright":"#f8f9ff","inverse-on-surface":"#e9f1ff"},borderRadius:{DEFAULT:"0.125rem",lg:"0.25rem",xl:"0.5rem",full:"0.75rem"},fontFamily:{headline:["Manrope"],body:["Inter"],label:["Inter"]}}}}
 </script>
@@ -18,14 +19,14 @@
 </head>
 <body class="text-on-background">
 <div class="flex min-h-screen">
-  <aside class="w-64 bg-surface border-r border-outline-variant/20 flex flex-col fixed h-full z-50">
+  <aside class="app-sidebar w-64 bg-surface border-r border-outline-variant/20 flex flex-col fixed h-full z-50">
     <div class="p-6 flex items-center gap-3">
       <div class="size-10 bg-primary flex items-center justify-center rounded-lg">
         <svg class="text-white size-6" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg"><path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" fill="currentColor"/></svg>
       </div>
       <div><h1 class="font-headline font-bold text-lg leading-none">BuildOS</h1><p class="text-on-surface-variant text-xs mt-1">Construction Management</p></div>
     </div>
-    <nav class="flex-1 px-4 mt-4 flex flex-col gap-1">
+    <nav class="main-nav flex-1 px-4 mt-4 flex flex-col gap-1">
       <a href="/dashboard" class="sidebar-active flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">dashboard</span>Dashboard</a>
       <a href="/inventory" class="text-on-surface-variant hover:bg-surface-container-low flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined">inventory_2</span>Inventory</a>
       <a href="/finance" class="text-on-surface-variant hover:bg-surface-container-low flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm"><span class="material-symbols-outlined">payments</span>Finance</a>
